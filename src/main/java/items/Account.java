@@ -10,28 +10,31 @@ public class Account implements Serializable {
 	private String username;
 	private transient String password;
 	private double balance;
-	private boolean isApproved=false;
-	private String username2;
+	private boolean isApproved;
 	private String firstname;
 	private String lastname;
+	private String jointFirst;
+	private String jointLast;
 	
 	
 
 	@Override
 	public String toString() {
-		return "Account [username=" + username + ", password=" + password + ", balance=" + balance + ", isApproved="
-				+ isApproved + ", username2=" + username2 + ", firstname=" + firstname + ", lastname=" + lastname + "]";
+		return "Account [username=" + username + ", balance=" + balance + ", isApproved="
+				+ isApproved + ", firstname=" + firstname + ", lastname=" + lastname + ", jointFirst=" + jointFirst+ ", jointLast=" + jointLast + "]";
 	}
 
-	public Account(String username, String password, double balance, String username2, String firstname,
-			String lastname) {
+	public Account(String username, String password, double balance, String firstname,
+			String lastname, String jointFirst, String jointLast) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.balance = balance;
-		this.username2 = username2;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.jointFirst = jointFirst;
+		this.jointLast = jointLast;
+		this.isApproved = false;
 	}
 
 	public Account(String username, String password, double balance, String firstname, String lastname) {
@@ -41,8 +44,18 @@ public class Account implements Serializable {
 		this.balance = balance;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.isApproved = false;
 	}
-
+	
+	public Account(String username, String password, double balance, String firstname, String lastname, boolean isApproved) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.balance = balance;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.isApproved = isApproved;
+	}
 	public String getUsername() {
 		return username;
 	}

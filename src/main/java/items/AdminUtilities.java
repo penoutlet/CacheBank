@@ -38,11 +38,10 @@ public class AdminUtilities {
 		if (transferTo != null) {
 			Actions.transfer(a, transferAmt, transferTo);
 			System.out.println("Transfer success");
-			System.out.println("Transferred " + transferAmt);
 		} else {
 			System.out.println("Cannot transfer to that user; user not found.");
 		}
-		AdminMenu.actionMenu(transferTo);
+		AdminMenu.actionMenu(a);
 	}
 	
 	public static void cancelMenu(Account a) {

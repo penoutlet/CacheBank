@@ -7,8 +7,8 @@ import items.Account;
 import items.ApprovedAccounts;
 import items.PendingAccounts;
 public class Employee {
-	private final String username = "emp";
-	private final String password = "emp";
+	private final String username = "Sam";
+	private final String password = "1";
 	private static Logger log = Logger.getLogger(Employee.class);
 	
 	

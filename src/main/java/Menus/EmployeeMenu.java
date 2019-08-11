@@ -10,15 +10,15 @@ import items.PendingAccounts;
 public class EmployeeMenu {
 	static Scanner sc = new Scanner(System.in);
 	static String[] optionsArray = { "1. View an approved account", "2. Approve or deny a pending account.",
-			"3. View all usernames of pending accounts.", "4.Return to previous menu (logout)." };
+			"3. Return to previous menu (logout)." };
 
 	public static void actionMenu() {
-		System.out.println("Welcome employee, what would you like to do?");
+		System.out.println("What would you like to do?");
 
 		for (int i = 0; i < optionsArray.length; i++) {
 			System.out.println(optionsArray[i]);
 		}
-
+		sc = new Scanner(System.in);
 		String choice = sc.nextLine();
 		handleInput(choice);
 	}
@@ -26,6 +26,7 @@ public class EmployeeMenu {
 	public static void handleInput(String choice) {
 		Account account = null;
 		String username = "";
+		sc = new Scanner(System.in);
 		boolean flag = true;
 		while (flag) {
 
@@ -37,33 +38,26 @@ public class EmployeeMenu {
 				username += sc.nextLine();
 				account = ApprovedAccounts.fetchOne(username);
 				if (account == null) {
-					System.out.println("No user found. ");
+					System.out.println("Account not found.");
 					actionMenu();
 				} 
-				
 				System.out.println(account.toString());
 				actionMenu();
 				flag = !flag;
 				break;
 			case "2":
-				//approve or deny
 				System.out.println("Enter a username to fetch.");
-				sc.nextLine();
 				username += sc.nextLine();
 				account = PendingAccounts.fetchOne(username);
 				if(account != null) {
+					System.out.println(account.toString());
 					approveOrDenyMenu(account);
 				}
-				
+				System.out.println("No user found.");
 				actionMenu();
 				flag=!flag;
 				break;
 			case "3":
-				PendingAccounts.fetchAll();
-				EmployeeMenu.actionMenu();
-				flag = !flag;
-				break;
-			case "4":
 				MainMenu.mainMenu();
 				flag = !flag;
 				break;
@@ -77,6 +71,7 @@ public class EmployeeMenu {
 
 	public static void approveOrDenyMenu(Account a) {
 		System.out.println("1. Approve\n2. Deny\n3.Return to previous menu");
+		sc = new Scanner(System.in);
 		String choice = sc.nextLine();
 		switch (choice) {
 		case "1":
@@ -88,7 +83,7 @@ public class EmployeeMenu {
 			actionMenu();
 			break;
 		case "3":
-			MainMenu.mainMenu();
+			actionMenu();
 			break;
 		default:
 			approveOrDenyMenu(a);

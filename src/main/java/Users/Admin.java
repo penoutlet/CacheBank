@@ -7,8 +7,8 @@ import items.ApprovedAccounts;
 import items.PendingAccounts;
 
 public class Admin extends Employee {
-	private final String username="admin";
-	private final String password="admin";
+	private final String username="Sam";
+	private final String password="1";
 
 	public Admin() {
 		// TODO Auto-generated constructor stub

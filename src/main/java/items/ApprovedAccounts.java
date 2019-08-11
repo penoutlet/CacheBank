@@ -25,13 +25,6 @@ public class ApprovedAccounts implements Serializable {
 	private static final Employee emp = new Employee();
 	// private static Logger log = Logger.getLogger(ApprovedAccounts.class);
 
-	// add test peoples
-	public static void addDummies() {
-		addOne("testa", new Account("testa", "testa", 10000, "testa", "testa"));
-		addOne("Yum", new Account("Yum", "Yum", 100000, "test", "test"));
-		PendingAccounts.addOne("testp", new Account("testp", "testp", 10000, "testp", "testp"));
-	}
-
 	public static void addAll(ArrayList<Account> data) {
 		System.out.println(data.toString());
 		for (Account a : data) {
@@ -43,7 +36,8 @@ public class ApprovedAccounts implements Serializable {
 	public static void deserialize() throws FileNotFoundException {
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		System.out.println("deserialize inside of approved.");
-		accounts.add((Account)Persistence.readData("./approvedaccounts.txt"));
+//		accounts.add((Account) Persistence.readData("./approvedaccounts.txt")); if there is only one account in the txt file
+		accounts.addAll((ArrayList)Persistence.readData("./approvedaccounts.txt"));
 		addAll(accounts);
 	}
 
@@ -81,18 +75,13 @@ public class ApprovedAccounts implements Serializable {
 		for (String u : keys) {
 			if (username.equals(u)) {
 				account = approvedAccounts.get(u);
-			} else {
-				System.out.println("Unable to fetch.");
-				MainMenu.mainMenu();
 			}
 		}
 		return account;
-
 	}
 
 	public static void updateOne(Account a) {
 		approvedAccounts.replace(a.getUsername(), a);
-		System.out.println("New balance for " + a.getUsername() + " is " + a.getBalance());
 		serializeAll(); // calls fetchAll, which creates an arraylist of current accounts, and then
 						// calls writeList and writes them to a file
 	}
@@ -108,49 +97,32 @@ public class ApprovedAccounts implements Serializable {
 	}
 
 	// login methods
+
 	public static void customerLogin() {
 		Account a = null;
-		sc.nextLine();
-		System.out.println("Enter a username and password separated by a space");
-		String usernamePW[] = sc.nextLine().split("\\s+");
 
-		String u = "";
-		String pw = "";
-
-		try {
-			u += usernamePW[0];
-			pw += usernamePW[1];
-			System.out.println("pw entered " + pw);
-			a = fetchOne(u);
-			if (a == null) {
-				MainMenu.mainMenu();
-			} else if (pw.equals(a.getPassword())) {
-				System.out.println("PW on file" + a.getPassword());
-				CustomerMenu.actionMenu(a);
-			} else {
-				System.out.println("Incorrect password.");
-				MainMenu.mainMenu();
-			}
-		} catch (ArrayIndexOutOfBoundsException e) {
-			e.printStackTrace();
-			System.out.println("Enter username + space + password");
+		sc = new Scanner(System.in);
+		System.out.println("Enter username.");
+		String u = sc.nextLine();
+		System.out.println("Enter password");
+		String pw = sc.nextLine();
+		a = fetchOne(u);
+		if (a == null) {
+			MainMenu.mainMenu();
+		} else if (pw.equals(a.getPassword())) {
+			CustomerMenu.actionMenu(a);
+		} else {
+			System.out.println("Incorrect password.");
+			MainMenu.mainMenu();
 		}
 	}
 
 	public static void employeeLogin() {
-		sc.nextLine();
-		System.out.println("Enter a username and password separated by a space");
-		String usernamePW[] = sc.nextLine().split("\\s+");
-
-		String u = "";
-		String pw = "";
-		try {
-			u += usernamePW[0];
-			pw += usernamePW[1];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			e.printStackTrace();
-			System.out.println("Enter username + space + password");
-		}
+		sc = new Scanner(System.in);
+		System.out.println("Enter username.");
+		String u = sc.nextLine();
+		System.out.println("Enter password");
+		String pw = sc.nextLine();
 
 		if (u.equals(emp.getUsername()) && pw.equals(emp.getPassword())) {
 			System.out.println("Login success");
@@ -162,17 +134,11 @@ public class ApprovedAccounts implements Serializable {
 	}
 
 	public static void adminLogin() {
-		String u = "";
-		String pw = "";
-		System.out.println("Enter a username and password separated by a space");
-		String usernamePW[] = sc.nextLine().split("\\s+");
-		try {
-			u += usernamePW[0];
-			pw += usernamePW[1];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			e.printStackTrace();
-			System.out.println("Enter username + space + password");
-		}
+		sc = new Scanner(System.in);
+		System.out.println("Enter username.");
+		String u = sc.nextLine();
+		System.out.println("Enter password");
+		String pw = sc.nextLine();
 		if (u.equals(admin.getUsername()) && pw.equals(admin.getPassword())) {
 			System.out.println("Login success");
 			AdminMenu.mainMenu();

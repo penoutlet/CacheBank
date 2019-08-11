@@ -5,10 +5,9 @@ import java.util.Scanner;
 
 import Users.Admin;
 import items.Account;
-import items.AdminUtilities;
 import items.ApprovedAccounts;
 import items.PendingAccounts;
-import items.UtilityMenus;
+import utilities.Handler;
 
 public class AdminMenu {
 	static Scanner sc = new Scanner(System.in);
@@ -22,6 +21,7 @@ public class AdminMenu {
 		for(int i =0; i<optionsArray1.length;i++) {
 			System.out.println(optionsArray1[i]);
 		}
+		sc = new Scanner(System.in);
 		String choice = sc.nextLine();
 		firstInputHandler(choice);
 	}
@@ -30,34 +30,26 @@ public class AdminMenu {
 		for(int i =0; i<optionsArray2.length;i++) {
 			System.out.println(optionsArray2[i]);
 		}
+		sc = new Scanner(System.in);
 		String choice = sc.nextLine();
-		secondInputHandler(choice, a);
+		Handler.actionHandler(choice, a, "admin");
 	}
 	
 	public static void firstInputHandler(String choice)  {
 		boolean flag = true;
+		sc = new Scanner(System.in);
 		while(flag) {
 			
 			switch(choice) {
 			case "1": 
 				System.out.println("Enter a username to fetch.");
-				sc.nextLine();
 				String username = sc.nextLine();
 				Account a = ApprovedAccounts.fetchOne(username);
 				if(a==null) {
 					System.out.println("No such user exists.");
 					AdminMenu.mainMenu();
 				} 
-				System.out.println(a.getUsername() + " found.");
 				actionMenu(a);
-//				try { 
-//					Account a = ApprovedAccounts.fetchOne(username);
-//					actionMenu(a);
-//				} catch(NullPointerException e) {
-//					e.printStackTrace();
-//					System.out.println("Woops account not found.");
-//				}
-				
 				flag=!flag;
 				break;
 			case "2":
@@ -67,7 +59,7 @@ public class AdminMenu {
 				if(a!=null) {
 					approveOrDenyMenu(a);
 				} else {
-					System.out.println("Account is null in AdminMenu.");
+					System.out.println("No account found.");
 				}
 				mainMenu();
 				flag=!flag;
@@ -79,45 +71,9 @@ public class AdminMenu {
 			}
 	}
 	}
-	public static void secondInputHandler(String choice, Account a) {
-		boolean flag = true;
-		while(flag) {
-			
-			switch(choice) {
-			case "0":
-				System.out.println(a.toString());
-				actionMenu(a);
-				flag=!flag;
-				break;
-			case "1": 
-				AdminUtilities.depositMenu(a);
-				flag=!flag;
-				break;
-			case "2":
-				AdminUtilities.withdrawMenu(a);
-				flag=!flag;
-				break;
-			case "3":
-				AdminUtilities.transferMenu(a);
-				flag=!flag;
-				break;
-			case "4":
-				AdminUtilities.cancelMenu(a);
-				flag=!flag;
-				break;
-			case "5":
-				AdminMenu.mainMenu();
-				flag=!flag;
-				break;
-			default: 
-				System.out.println("Select an option.");
-				flag=!flag;
-				break;
-			}
-		}
-	}
 	public static void approveOrDenyMenu(Account a) {
 		System.out.println("1. Approve\n2. Deny\n3.Return to previous menu");
+		sc = new Scanner(System.in);
 		String choice = sc.nextLine();
 		switch (choice) {
 		case "1":

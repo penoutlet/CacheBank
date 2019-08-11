@@ -19,43 +19,50 @@ public class Actions {
 		log.info(a.getUsername() + " withdrew " + amount);
 	}
 	
-	public static void transfer(Account a, double amount, Account transferTo) {
+	public static Account transfer(Account a, double amount, Account transferTo) {
 		Transaction t = new Transaction("transfer", amount, a);
 		execute(t,a,transferTo);
-		log.info(a.getUsername() + " transferred " + amount + " to " + a.getUsername());
+		log.info(a.getUsername() + " transferred " + amount + " to " + transferTo.getUsername());
+		return a;
 	}
 	
 	public static void cancel(Account a) {
 		ApprovedAccounts.removeOne(a.getUsername());
 	}
-	public static void execute(Transaction t, Account a, Account transferTo) {
+	public static Account execute(Transaction t, Account a, Account transferTo) {
 		double currBalance = a.getBalance();
 		double amount = t.getAmount();
 		if(t.getAction().equals("deposit")){
 			double newBal = currBalance += amount;
 			a.setBalance(newBal);
 			ApprovedAccounts.updateOne(a);
+//			return a;
 		}
 		else if(t.getAction().equals("withdraw")) {
 			if(t.getAmount()>currBalance) {
 				System.out.println("Insufficient funds.");
+				return a;
 			}
 			
 			double newBal = currBalance -= amount;
 			a.setBalance(newBal);
 			ApprovedAccounts.updateOne(a);
+//			return a;
 			
 		}
 		else if(t.getAction().equals("transfer")) {
 			if(t.getAmount()>currBalance) {
 				System.out.println("Insufficient funds.");
+				return a;
 			}
 			
 			a.setBalance(currBalance -= amount);
+			ApprovedAccounts.updateOne(a);
 			double newTransferBal = transferTo.getBalance() + amount;
 			transferTo.setBalance(newTransferBal);
-			ApprovedAccounts.updateOne(a);
 			ApprovedAccounts.updateOne(transferTo);
+//			return a;
 		}
+		return a;
 	}
 }
